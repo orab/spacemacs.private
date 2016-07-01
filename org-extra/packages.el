@@ -111,7 +111,21 @@ Each entry is either:
     (setq org-mobile-directory "~/Dropbox/org/MobileOrg")
     (setq org-mobile-agendas 'default)
     (setq org-mobile-inbox-for-pull "~/Dropbox/org/refile.org"))
-  )
+
+  (setq org-clock-persist 'history)
+  (org-clock-persistence-insinuate)
+  (setq org-clock-in-resume t)
+  ;; Save clock data and notes in the LOGBOOK drawer
+  (setq org-clock-into-drawer t)
+  ;; Save state changes in the LOGBOOK drawer
+  (setq org-log-into-drawer t)
+  ;; Removes clocked tasks with 0:00 duration
+  (setq org-clock-out-remove-zero-time-clocks t)
+
+  ;; Show clock sums as hours and minutes, not "n days" etc.
+  (setq org-time-clocksum-format
+        '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))
+ )
 
 (defun org-extra/post-init-org-agenda ()
   (require 'org-checklist)
