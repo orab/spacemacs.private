@@ -77,9 +77,19 @@ Each entry is either:
           ("STYLE_ALL" . "habit")))
   (setq org-columns-default-format "%50ITEM(Task) %10Effort(Effort){:} %10CLOCKSUM %30TAGS")
 
+  (setq org-log-done 'time)
+  ;; Save state changes in the LOGBOOK drawer
+  (setq org-log-into-drawer t)
+  (setq org-log-state-notes-insert-after-drawers nil)
   (setq org-todo-keywords
         '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-          (sequence "WAITING(w@/!)" "HOLD(h)" "|" "CANCELLED(c@/!)")))
+          (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")))
+  (setq org-todo-keyword-faces
+        '(("TODO" :weight bold :box (:line-width 1 :color "red") :foreground "red" :background "tomato")
+          ("NEXT" :weight bold :box (:line-width 1 :color "blue") :foreground "blue" :background "steel blue")
+          ("DONE" :weight bold :box (:line-width 1 :color "forest green") :foreground "forest green" :background "pale green")
+          ("WAITING" :weight bold :box (:line-width 1 :color "orange") :foreground "orange" :background "wheat")
+          ("HOLD" :weight bold :box (:line-width 1 :color "magenta") :foreground "magenta" :background "orchid")))
   (setq org-todo-state-tags-triggers
         '(("CANCELLED" ("CANCELLED" . t))
           ("WAITING" ("WAITING" . t))
@@ -117,9 +127,7 @@ Each entry is either:
   (setq org-clock-in-resume t)
   ;; Save clock data and notes in the LOGBOOK drawer
   (setq org-clock-into-drawer t)
-  ;; Save state changes in the LOGBOOK drawer
-  (setq org-log-into-drawer t)
-  ;; Removes clocked tasks with 0:00 duration
+ ;; Removes clocked tasks with 0:00 duration
   (setq org-clock-out-remove-zero-time-clocks t)
 
   ;; Show clock sums as hours and minutes, not "n days" etc.
