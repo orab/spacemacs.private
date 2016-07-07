@@ -218,7 +218,15 @@ Each entry is either:
   (setq org-archive-location "%s_archive::* Archive")
   ;; Include agenda archive files when searching for things
   (setq org-agenda-text-search-extra-files (quote (agenda-archives)))
- )
+  (evilified-state-evilify org-agenda-mode org-agenda-mode
+    "P" 'orabfy/narrow-to-project
+    "N" 'orabfy/narrow-to-subtree
+    "F" 'orabfy/restrict-to-file-or-follow
+    "W" (lambda ()
+          (interactive)
+          (setq orabfy/hide-scheduled-and-waiting-next-tasks t)
+          (orabfy/widen)))
+  )
 
 (defun org-extra/init-org-mobile-sync ()
   (use-package org-mobile-sync
@@ -307,8 +315,6 @@ Callers of this function already widen the buffer view."
       (setq org-tags-match-list-sublevels t)
     (setq org-tags-match-list-sublevels nil))
   nil)
-
-(defvar orabfy/hide-scheduled-and-waiting-next-tasks t)
 
 (defun orabfy/toggle-next-task-display ()
   (interactive)
@@ -492,6 +498,30 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
     (if (orabfy/is-subproject-p)
         nil
       next-headline)))
+
+(defvar orabfy/hide-scheduled-and-waiting-next-tasks t)
+
+(defun orabfy/widen ()
+  (interactive)
+  (if (equal major-mode 'org-agenda-mode)
+      (progn
+        (org-agenda-remove-restriction-lock)
+        (when org-agenda-sticky
+          (org-agenda-redo)))
+    (widen)))
+
+(defun orabfy/restrict-to-file-or-follow (arg)
+  "Set agenda restriction to 'file or with argument invoke follow mode.
+I don't use follow mode very often but I restrict to file all the time
+so change the default 'F' binding in the agenda to allow both"
+  (interactive "p")
+  (if (equal arg 4)
+      (org-agenda-follow-mode)
+    (widen)
+    (orabfy/set-agenda-restriction-lock 4)
+    (org-agenda-redo)
+    (beginning-of-buffer)))
+
 (defun orabfy/narrow-to-org-subtree ()
   (widen)
   (org-narrow-to-subtree)
