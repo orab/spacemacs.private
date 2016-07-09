@@ -34,6 +34,7 @@
     (org :location built-in)
     (org-agenda :location built-in)
     (org-plus-contrib :step pre)
+    org-pomodoro
     org-mobile-sync
    )
   "The list of Lisp packages required by the org-extra layer.
@@ -218,7 +219,7 @@ Each entry is either:
   (setq org-archive-location "%s_archive::* Archive")
   ;; Include agenda archive files when searching for things
   (setq org-agenda-text-search-extra-files (quote (agenda-archives)))
-  (evilified-state-evilify org-agenda-mode org-agenda-mode
+  (evilified-state-evilify org-agenda-mode org-agenda-mode-map
     "P" 'orabfy/narrow-to-project
     "N" 'orabfy/narrow-to-subtree
     "F" 'orabfy/restrict-to-file-or-follow
@@ -227,6 +228,10 @@ Each entry is either:
           (setq orabfy/hide-scheduled-and-waiting-next-tasks t)
           (orabfy/widen)))
   )
+
+(defun org-extra/post-init-org-pomodoro ()
+  (spacemacs/set-leader-keys-for-major-mode 'org-agenda-mode
+    "p" 'org-pomodoro))
 
 (defun org-extra/init-org-mobile-sync ()
   (use-package org-mobile-sync
