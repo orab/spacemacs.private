@@ -33,7 +33,6 @@
   '(
     (org :location built-in)
     (org-agenda :location built-in)
-    (org-plus-contrib :step pre)
     org-pomodoro
     org-mobile-sync
    )
@@ -102,10 +101,9 @@ Each entry is either:
 
   (when (file-exists-p "~/Dropbox/org")
     (setq org-directory "~/Dropbox/org")
-    (require 'find-lisp)
-    (setq org-agenda-files (cons "~/Dropbox/org/refile.org"
-                                 (find-lisp-find-files "~/Dropbox/org/GTD" ".*\.org$")))
-    (setq org-publish-files (find-lisp-find-files "~/Dropbox/org/publish" ".*\.org$"))
+    (setq org-agenda-files '("~/Dropbox/org/refile.org"
+                             "~/Dropbox/org/GTD/"))
+    (setq org-publish-files '("~/Dropbox/org/publish/"))
     (setq org-refile-targets '((nil :maxlevel . 8)
                                (org-agenda-files :maxlevel . 8)
                                (org-publish-files :maxlevel . 8)))
@@ -128,13 +126,13 @@ Each entry is either:
   (setq org-clock-in-resume t)
   ;; Save clock data and notes in the LOGBOOK drawer
   (setq org-clock-into-drawer t)
- ;; Removes clocked tasks with 0:00 duration
+  ;; Removes clocked tasks with 0:00 duration
   (setq org-clock-out-remove-zero-time-clocks t)
 
   ;; Show clock sums as hours and minutes, not "n days" etc.
   (setq org-time-clocksum-format
         '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))
- )
+  )
 
 (defun org-extra/post-init-org-agenda ()
   (require 'org-checklist)
