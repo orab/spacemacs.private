@@ -33,7 +33,7 @@
   '(
     (org :location built-in)
     (org-agenda :location built-in)
-    org-pomodoro
+    (org-publish :location built-in)
     org-mobile-sync
    )
   "The list of Lisp packages required by the org-extra layer.
@@ -227,9 +227,31 @@ Each entry is either:
           (orabfy/widen)))
   )
 
-(defun org-extra/post-init-org-pomodoro ()
-  (spacemacs/set-leader-keys-for-major-mode 'org-agenda-mode
-    "p" 'org-pomodoro))
+(defun org-extra/init-org-publish ()
+  (setq org-publish-project-alist
+        '(
+          ("blog-notes"
+           :base-directory "~/Dropbox/org/orab.github.io/"
+           :base-extension "org"
+           :publishing-directory "~/blog/orab.github.io/"
+           :recursive t
+           :publishing-function org-html-publish-to-html
+           :headline-levels 4
+           :section-numbers nil
+           :auto-preamble t
+           :auto-sitemap t
+           :sitemap-filename "sitemap.org"
+           :sitemap-title "Sitemap"
+           :author "orab"
+           :email "orabfy@gmail.com")
+          ("blog-static"
+           :base-directory "~/Dropbox/org/orab.github.io/"
+           :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+           :publishing-directory "~/blog/orab.github.io/"
+           :publishing-function org-publish-attachment
+           :recursive t)
+          ("blog" :components ("blog-notes" "blog-static"))
+          )))
 
 (defun org-extra/init-org-mobile-sync ()
   (use-package org-mobile-sync
